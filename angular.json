@@ -26,6 +26,9 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/assets/images/reelkix-logo.png",
+              "src/assets/images/reelkix-white-logo.png",
+              "src/assets/images/reelkix-white-nolabel-logo.png",
               {
                 "glob": "**/*",
                 "input": "public"
@@ -85,6 +88,9 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              "src/assets/images/reelkix-logo.png",
+              "src/assets/images/reelkix-white-logo.png",
+              "src/assets/images/reelkix-white-nolabel-logo.png",
               {
                 "glob": "**/*",
                 "input": "public"

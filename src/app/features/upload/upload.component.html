@@ -1,0 +1,59 @@
+<div class="relative min-h-screen bg-reelkix-dark-gray p-4"
+     (dragover)="handleDragOver($event)"
+     (drop)="handleDrop($event)"
+     (dragleave)="isDragging = false">
+
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div class="text-center">
+      <loading-spinner></loading-spinner>
+      <p class="mt-4 text-reelkix-red text-lg font-medium">Analyzing Your Shoe...</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-md mx-auto">
+    <!-- Camera Preview -->
+    <div class="mb-6 rounded-lg overflow-hidden" [class.invisible]="!isCameraActive">
+        <video #videoPreview class="w-full h-64 object-cover" autoplay playsinline></video>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="border-2 border-dashed border-reelkix-red rounded-xl p-8 transition-all"
+         [class.border-solid]="isDragging || isCameraActive">
+      <div class="text-center">
+        <h2 class="text-2xl font-bold mb-4 text-white">Upload Kix Photo</h2>
+        <p class="text-gray-300 mb-6">Take a photo or upload an existing image of your shoes</p>
+
+        <div class="flex flex-col space-y-4">
+          <!-- File Upload Button -->
+          <input type="file" hidden #fileInput (change)="handleFileInput($event)" accept="image/*">
+          <button mat-raised-button color="warn" (click)="fileInput.click()">
+            <mat-icon>upload</mat-icon>
+            Choose File
+          </button>
+
+          <!-- Camera Toggle Button -->
+          <button mat-stroked-button color="warn" (click)="toggleCamera()">
+            <mat-icon>{{ isCameraActive ? 'camera_off' : 'camera' }}</mat-icon>
+            {{ isCameraActive ? 'Stop Camera' : 'Use Camera' }}
+          </button>
+
+          <!-- Capture Button (Only when camera active) -->
+          <button *ngIf="isCameraActive" 
+                  mat-raised-button 
+                  color="warn"
+                  (click)="capturePhoto()">
+            <mat-icon>camera</mat-icon>
+            Capture Photo
+          </button>
+        </div>
+
+        <!-- Drag & Drop Hint -->
+        <p class="text-gray-400 mt-6 text-sm" *ngIf="!isCameraActive">
+          Or drag and drop your photo here
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,135 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Material Icons */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Force override Material styles */
+.reelkix-toolbar.mat-toolbar {
+  --mat-toolbar-container-background-color: theme('colors.reelkix-dark-gray') !important;
+  --mat-toolbar-container-text-color: theme('colors.reelkix-red') !important;
+  
+  background: var(--mat-toolbar-container-background-color) !important;
+  color: var(--mat-toolbar-container-text-color) !important;
+}
+
+/* Specific selector for text color */
+.reelkix-toolbar .brand-text,
+.reelkix-toolbar .menu-button {
+  color: theme('colors.reelkix-white') !important;
+}
+
+/* Toolbar Layout */
+.mat-mdc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  
+  img {
+    @apply h-10 md:h-12; // Using Tailwind's responsive sizing
+  }
+  
+  span {
+    @apply text-xl md:text-2xl; // Responsive text sizing
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .mat-mdc-toolbar {
+    padding: 0 0.75rem;
+    
+    img {
+      @apply h-8 mr-2;
+    }
+    
+    span {
+      @apply text-lg;
+    }
+  }
+}
+
+  /* Custom logo sizing */
+.reelkix-logo {
+    height: 5.5rem;  // Fallback for older browsers
+    max-height: 10vh; // Prevent excessive sizing on tall screens
+
+    @media (min-width: 768px) {
+        height: 5.5rem;
+        margin-right: 1.5rem;
+    }
+
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reelkix-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Custom Global Styles */
+.mat-mdc-sidenav {
+  background-color: theme('colors.reelkix-black') !important;
+  color: white !important;
+}
+
+.mat-mdc-toolbar {
+  background-color: theme('colors.reelkix-black') !important;
+  
+  .mat-mdc-button-base {
+    color: theme('colors.reelkix-red') !important;
+  }
+}
+
+.mat-drawer-inner-container {
+  background-color: theme('colors.reelkix-dark-gray') !important;
+}
+
+.mat-mdc-raised-button {
+  background-color: theme('colors.reelkix-red') !important;
+  color: white !important;
+}
+
+.mat-mdc-outlined-button {
+  border-color: theme('colors.reelkix-red') !important;
+  color: theme('colors.reelkix-red') !important;
+}
+
+/* Upload Section Styling */
+.upload-container {
+  @apply border-2 border-dashed border-reelkix-red rounded-xl p-8 transition-all;
+  
+  &:hover {
+    @apply border-solid bg-reelkix-black/20;
+  }
+}
+
+.drag-active {
+  @apply border-solid bg-reelkix-black/30;
+}
+
+/* Sidebar Links Styling */
+.sidenav-link {
+  @apply text-white hover:text-reelkix-red transition-colors duration-200 py-2 px-4 rounded-lg;
+  
+  &:hover {
+    @apply bg-reelkix-black/30;
+  }
+}
+
+/* Ensure Material Icons Display Correctly */
+.material-icons {
+  font-family: 'Material Icons' !important;
+}
+
+/* Mobile First Adjustments */
+@media (max-width: 640px) {
+  .mat-mdc-sidenav {
+    width: 80vw !important;
+  }
+  
+  .upload-container {
+    @apply p-4;
+  }
+}
