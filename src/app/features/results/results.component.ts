@@ -24,6 +24,7 @@ import { StateService } from '../../core/services/state/state.service';
                 <p *ngIf="analysis.model"><span class="font-semibold">Model:</span> {{ analysis.model }}</p>
                 <p *ngIf="analysis.colorway"><span class="font-semibold">Colorway:</span> {{ analysis.colorway }}</p>
                 <p *ngIf="analysis.sku"><span class="font-semibold">SKU:</span> {{ analysis.sku }}</p>
+                <p *ngIf="analysis.confidence"><span class="font-semibold">Confidence:</span> {{ analysis.confidence }}</p>
             </div>
 
             <!-- Fallback Text Section -->
