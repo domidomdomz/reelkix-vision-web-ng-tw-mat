@@ -211,9 +211,19 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private showError(message: string): void {
-    this.snackBar.open(message, 'Dismiss', {
-      duration: 5000,
-      panelClass: ['error-snackbar']
-    });
+    this.isLoading = false;
+    this.snackBar.open(
+      `${message}`,
+      'Dismiss', 
+      {
+        duration: 5000,
+        panelClass: ['custom-error-snackbar'],
+        horizontalPosition: 'center',
+        verticalPosition: 'top', // More noticeable than bottom
+        data: {
+          icon: 'error' // Material icon name
+        }
+      }
+    );
   }
 }

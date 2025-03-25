@@ -26,7 +26,7 @@ import { DOCUMENT } from '@angular/common';
       <div class="flex items-center">
         <img src="/assets/images/reelkix-white-logo.png" 
             alt="Reelkix Vision Logo"
-            class="h-10 w-auto mr-3">
+            class="h-12 w-auto mr-3">
         <span class="brand-text text-xl font-bold">Reelkix Vision</span>
       </div>
 

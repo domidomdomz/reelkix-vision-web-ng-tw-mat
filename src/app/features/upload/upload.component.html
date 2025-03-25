@@ -4,10 +4,10 @@
      (dragleave)="isDragging = false">
 
   <!-- Loading Overlay -->
-  <div *ngIf="isLoading" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
     <div class="text-center">
       <loading-spinner></loading-spinner>
-      <p class="mt-4 text-reelkix-red text-lg font-medium">Analyzing Your Shoe...</p>
+      <p class="mt-4 text-reelkix-white text-lg font-medium">Analyzing your Kix...</p>
     </div>
   </div>
 
@@ -62,6 +62,13 @@
         <p class="text-gray-400 mt-6 text-sm" *ngIf="!isCameraActive">
           Or drag and drop your photo here
         </p>
+
+        <!-- Disclaimer at Bottom -->
+        <div class="mt-8 pt-4 border-t border-reelkix-red/30">
+          <p class="text-reelkix-red/80 text-xs text-center">
+            Disclaimer: Results may not be 100% accurate.
+          </p>
+        </div>
       </div>
     </div>
   </div>

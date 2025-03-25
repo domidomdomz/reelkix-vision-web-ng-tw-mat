@@ -4,9 +4,13 @@ import { Component } from '@angular/core';
   selector: 'loading-spinner',
   standalone: true,
   template: `
-    <div class="flex justify-center items-center py-8">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-accent"></div>
-    </div>
-  `,
+  <div class="flex justify-center items-center">
+    <img src="/assets/images/reelkix-white-logo.png" 
+         alt="Loading..."
+         class="animate-flip 
+                opacity-90 
+                transition-all duration-1000">
+  </div>
+`,
 })
 export class LoadingSpinnerComponent {}
