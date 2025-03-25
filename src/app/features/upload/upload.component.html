@@ -47,6 +47,15 @@
             <mat-icon>camera</mat-icon>
             Capture Photo
           </button>
+
+          <!-- Add this button after the Capture Photo button -->
+          <button *ngIf="isCameraActive && availableDevices.length > 1" 
+            mat-stroked-button 
+            color="warn"
+            (click)="switchCamera()">
+          <mat-icon>switch_camera</mat-icon>
+          Switch Camera
+          </button>
         </div>
 
         <!-- Drag & Drop Hint -->

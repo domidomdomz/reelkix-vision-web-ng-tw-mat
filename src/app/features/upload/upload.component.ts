@@ -10,6 +10,7 @@ import { CameraService } from '../../core/services/camera.service';
 import { ImageService } from '../../core/services/api/image.service';
 import { StateService } from '../../core/services/state/state.service';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner.component';
+import { DeviceInfo } from '../../core/services/camera.service';
 
 @Component({
   selector: 'app-upload',
@@ -38,6 +39,8 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = false;
   isCameraActive = false;
   isDragging = false;
+  availableDevices: DeviceInfo[] = [];
+  currentDevice: DeviceInfo | null = null;
 
   constructor(
     private cameraService: CameraService,
@@ -80,13 +83,62 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe({
         next: () => {
           this.isCameraActive = true;
+          this.availableDevices = this.cameraService.getAvailableDevices();
+          this.updateCurrentDevice();
           this.cdr.detectChanges();
         },
         error: (error) => {
-            this.showError('Failed to start camera. Please check permissions.');
-            console.error('Camera error:', error);
+          this.showError('Failed to start camera. Please check permissions.');
+          console.error('Camera error:', error);
         }
       });
+  }
+
+  private updateCurrentDevice(): void {
+    const stream = this.videoElement.srcObject as MediaStream;
+    const track = stream?.getVideoTracks()[0];
+    
+    if (track) {
+      const settings = track.getSettings();
+      this.currentDevice = this.availableDevices.find(d => d.deviceId === settings.deviceId) || null;
+    }
+  }
+
+  switchCamera(): void {
+    if (this.availableDevices.length < 2) return;
+  
+    // Try to find opposite facing mode first
+    const desiredMode = this.currentDevice?.facingMode === 'environment' ? 'user' : 'environment';
+    const nextDevice = this.findDeviceByFacingMode(desiredMode) || this.getNextDevice();
+  
+    if (nextDevice) {
+      this.cameraService.switchCamera(this.videoElement, nextDevice.deviceId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.currentDevice = nextDevice;
+            this.cdr.detectChanges();
+          },
+          error: (error) => {
+            this.showError('Failed to switch camera. Please try again.');
+            console.error('Camera switch error:', error);
+          }
+        });
+    }
+  }
+
+  private findDeviceByFacingMode(mode: string): DeviceInfo | undefined {
+    return this.availableDevices.find(device => 
+      device.facingMode === mode &&
+      device.deviceId !== this.currentDevice?.deviceId
+    );
+  }
+  
+  private getNextDevice(): DeviceInfo {
+    const currentIndex = this.availableDevices.findIndex(
+      d => d.deviceId === this.currentDevice?.deviceId
+    );
+    return this.availableDevices[(currentIndex + 1) % this.availableDevices.length];
   }
 
   private stopCamera(): void {
