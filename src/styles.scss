@@ -168,3 +168,13 @@
     }
   }
 }
+
+.capture-btn {
+  min-width: 200px;
+  min-height: 56px;
+  border: 2px solid theme('colors.reelkix-red') !important;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
