@@ -75,7 +75,7 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private startCamera(): void {
-    this.cameraService.initializeCamera(this.videoElement)
+    this.cameraService.initializeCamera(this.videoElement, { preferBackCamera: true })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
