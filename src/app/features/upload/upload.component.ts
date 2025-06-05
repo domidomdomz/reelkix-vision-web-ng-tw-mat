@@ -11,6 +11,8 @@ import { ImageService } from '../../core/services/api/image.service';
 import { StateService } from '../../core/services/state/state.service';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner.component';
 import { DeviceInfo } from '../../core/services/camera.service';
+import { ErrorService } from '../../core/services/error.service';
+import { ProblemDetails } from '../../core/interfaces/problem-details.interface';
 
 @Component({
   selector: 'app-upload',
@@ -46,6 +48,7 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
     private cameraService: CameraService,
     private imageService: ImageService,
     private stateService: StateService,
+    private errorService: ErrorService,
     private router: Router,
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef
@@ -88,7 +91,8 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
           this.cdr.detectChanges();
         },
         error: (error) => {
-          this.showError('Failed to start camera. Please check permissions.');
+          this.isLoading = false;
+          this.errorService.showError('Failed to start camera. Please check permissions.');
           console.error('Camera error:', error);
         }
       });
@@ -120,7 +124,8 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
             this.cdr.detectChanges();
           },
           error: (error) => {
-            this.showError('Failed to switch camera. Please try again.');
+            this.isLoading = false;
+            this.errorService.showError('Failed to switch camera. Please try again.');
             console.error('Camera switch error:', error);
           }
         });
@@ -152,7 +157,8 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe({
         next: (blob) => this.handleImageFile(blob),
         error: (error) => {
-          this.showError('Failed to capture photo. Please try again.');
+          this.isLoading = false;
+          this.errorService.showError('Failed to capture photo. Please try again.');
           console.error('Capture error:', error);
         }
       });
@@ -193,9 +199,7 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
             this.stateService.setAnalysisData(result);
             this.router.navigate(['/results']);
         },
-        error: (error) => { 
-          this.showError('Failed to analyze image. Please try again.');
-          console.error('Upload error:', error);
+        error: () => { 
           this.isLoading = false;
         }
       });
@@ -205,25 +209,26 @@ export class UploadComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cameraService.errors$
       .pipe(takeUntil(this.destroy$))
       .subscribe(message => {
-        this.showError(message);
+        this.isLoading = false;
+        this.errorService.showError(message);
         this.stopCamera();
       });
   }
 
-  private showError(message: string): void {
-    this.isLoading = false;
-    this.snackBar.open(
-      `${message}`,
-      'Dismiss', 
-      {
-        duration: 5000,
-        panelClass: ['custom-error-snackbar'],
-        horizontalPosition: 'center',
-        verticalPosition: 'top', // More noticeable than bottom
-        data: {
-          icon: 'error' // Material icon name
-        }
-      }
-    );
-  }
+  // private showError(message: string): void {
+  //   this.isLoading = false;
+  //   this.snackBar.open(
+  //     `${message}`,
+  //     'Dismiss', 
+  //     {
+  //       duration: 5000,
+  //       panelClass: ['custom-error-snackbar'],
+  //       horizontalPosition: 'center',
+  //       verticalPosition: 'top', // More noticeable than bottom
+  //       data: {
+  //         icon: 'error' // Material icon name
+  //       }
+  //     }
+  //   );
+  // }
 }
